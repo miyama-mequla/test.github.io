@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Christmas Wreath</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<main class="container">
+  <div class="wreath" id="wreath"></div>
+</main>
+
+<script>
+/* ===== オーナメント設定（差し替え用）===== */
+const ORNAMENTS = [
+  { front: "img/ornaments/ornament_01_front.png", back: "img/ornaments/ornament_01_back.png" },
+  { front: "img/ornaments/ornament_02_front.png", back: "img/ornaments/ornament_02_back.png" },
+  { front: "img/ornaments/ornament_03_front.png", back: "img/ornaments/ornament_03_back.png" },
+  { front: "img/ornaments/ornament_04_front.png", back: "img/ornaments/ornament_04_back.png" },
+  { front: "img/ornaments/ornament_05_front.png", back: "img/ornaments/ornament_05_back.png" },
+  { front: "img/ornaments/ornament_06_front.png", back: "img/ornaments/ornament_06_back.png" },
+  { front: "img/ornaments/ornament_07_front.png", back: "img/ornaments/ornament_07_back.png" },
+  { front: "img/ornaments/ornament_08_front.png", back: "img/ornaments/ornament_08_back.png" }
+];
+
+const RADIUS_RATIO = 0.38;
+const wreath = document.getElementById("wreath");
+
+/* ===== 生成 ===== */
+ORNAMENTS.forEach((item) => {
+  const ornament = document.createElement("div");
+  ornament.className = "ornament";
+
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <div class="front"><img src="${item.front}" alt=""></div>
+    <div class="back"><img src="${item.back}" alt=""></div>
+  `;
+
+  card.addEventListener("click", () => {
+    card.classList.toggle("is-flipped");
+  });
+
+  ornament.appendChild(card);
+  wreath.appendChild(ornament);
+});
+
+/* ===== 円形配置 ===== */
+function positionOrnaments() {
+  const size = wreath.clientWidth;
+  const center = size / 2;
+  const radius = size * RADIUS_RATIO;
+  const count = ORNAMENTS.length;
+
+  document.querySelectorAll(".ornament").forEach((ornament, index) => {
+    const angle = (index / count) * Math.PI * 2 - Math.PI / 2;
+    ornament.style.left = `${center + radius * Math.cos(angle)}px`;
+    ornament.style.top  = `${center + radius * Math.sin(angle)}px`;
+  });
+}
+
+window.addEventListener("resize", positionOrnaments);
+positionOrnaments();
+</script>
+
+</body>
+</html>
